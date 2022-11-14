@@ -3,7 +3,6 @@ module "ec2-instance" {
 
   name          = "SSM session example instance"
   vpc_id        = "VPC_ID"
-  vpc_subnet_id = "VPC_SUBNET_ID"
   ec2_subnet_id = "SUBNET_ID"
 
   security_group_ingress_with_cidr_blocks = [

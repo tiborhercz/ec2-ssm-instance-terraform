@@ -22,25 +22,8 @@ resource "aws_instance" "test" {
 }
 
 resource "aws_security_group" "ping" {
-  name        = "ping"
-  description = "Allow ping"
+  name        = "ec2-ssm-sg"
   vpc_id      = var.vpc_id
-
-  ingress {
-    description      = "icmp from VPC"
-    from_port        = 8
-    to_port          = -1
-    protocol         = "icmp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description      = "TCP from VPC"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = [var.vpc_cidr_block]
-  }
 
   egress {
     from_port        = 0
@@ -49,4 +32,37 @@ resource "aws_security_group" "ping" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+}
+
+resource "aws_security_group_rule" "ingress_with_cidr_blocks" {
+  count = length(var.security_group_ingress_with_cidr_blocks) > 0 ? length(var.security_group_ingress_with_cidr_blocks) : 0
+
+  security_group_id = aws_security_group.ping.id
+  type              = "ingress"
+
+  cidr_blocks = split(
+    ",",
+    lookup(
+      var.security_group_ingress_with_cidr_blocks[count.index],
+      "cidr_blocks",
+    ),
+  )
+  description = lookup(
+    var.security_group_ingress_with_cidr_blocks[count.index],
+    "description",
+    "Ingress Rule",
+  )
+
+  from_port = lookup(
+    var.security_group_ingress_with_cidr_blocks[count.index],
+    "from_port",
+  )
+  to_port = lookup(
+    var.security_group_ingress_with_cidr_blocks[count.index],
+    "to_port",
+  )
+  protocol = lookup(
+    var.security_group_ingress_with_cidr_blocks[count.index],
+    "protocol",
+  )
 }

@@ -10,19 +10,19 @@ data "aws_ami" "amazon-linux-2" {
 
 resource "aws_instance" "test" {
   ami           = data.aws_ami.amazon-linux-2.id
-  instance_type = "t3.micro"
+  instance_type = var.instance_size
 
   iam_instance_profile = aws_iam_instance_profile.ssm_profile.id
   vpc_security_group_ids = [aws_security_group.ping.id]
-  subnet_id = var.vpc_subnet_id
+  subnet_id = var.ec2_subnet_id
 
   tags = {
-    Name = "Test instance"
+    Name = var.instance_name
   }
 }
 
 resource "aws_security_group" "ping" {
-  name        = "ec2-ssm-sg"
+  name        = var.security_group_name
   vpc_id      = var.vpc_id
 
   egress {

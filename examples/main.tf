@@ -1,9 +1,10 @@
 module "ec2-instance" {
-  source = "git@github.com:tiborhercz/ec2-ssm-ping-test-instance-terraform.git"
+  source = "../"
 
-  name           = "SSM session example instance"
-  vpc_id         = "VPC_ID"
-  vpc_subnet_id  = "VPC_SUBNET_ID"
+  name          = "SSM session example instance"
+  vpc_id        = "VPC_ID"
+  vpc_subnet_id = "VPC_SUBNET_ID"
+  ec2_subnet_id = "SUBNET_ID"
 
   security_group_ingress_with_cidr_blocks = [
     {

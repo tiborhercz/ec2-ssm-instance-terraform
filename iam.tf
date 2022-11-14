@@ -1,10 +1,10 @@
 resource "aws_iam_instance_profile" "ssm_profile" {
-  name = "ssm-profile-${var.name}"
+  name = var.instance_profile_name
   role = aws_iam_role.role.name
 }
 
 resource "aws_iam_role" "role" {
-  name = "ssm-role-${var.name}"
+  name = var.ssm_role_name
   path = "/"
 
   managed_policy_arns = [

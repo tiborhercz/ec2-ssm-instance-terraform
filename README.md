@@ -13,3 +13,4 @@ This can either be done through VPC endpoints or through a NAT gateway.
 
 See more information here:
 https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-prerequisites.html
+
